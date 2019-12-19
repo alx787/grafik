@@ -1,0 +1,7 @@
+build.xml
+build/*
+dist/*
+lib/*
+nbproject/*
+setup/*
+test/*

@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich">
+    <h:body>
+        <ui:composition template="../WEB-INF/templates/common.xhtml" >
+            
+            <ui:define name="windowTitle">
+                <title>#{employeeEditBean.name}</title>
+                <h:outputStylesheet library="css" name="employees.css" />
+            </ui:define>
+
+            <ui:define name="sectionName">
+                #{employeeEditBean.name}
+            </ui:define>
+
+            <ui:define name="sectionMenu">
+                <h:commandLink value="ОК" action="#{employeeEditBean.onActionOK}" class="links" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:commandLink value="Сохранить" action="#{employeeEditBean.onActionSave}" class="links" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:link value="Отмена" outcome="employeelist" class="links"/>
+            </ui:define>
+
+            <ui:define name="sectionContent">
+                
+                <rich:panel styleClass="centerTable">
+                    <h:panelGrid columns="2" columnClasses="col_1,col_2" style="margin-bottom: 10px">
+                        <h:outputText value="Номер" />
+                        <h:outputText value="#{employeeEditBean.id}" />
+
+                        <h:outputText value="Фамилия И.О." />
+                        <h:inputText id="emplname" value="#{employeeEditBean.name}" style="width: 100%" required="true" requiredMessage="Не заполнено Ф.И.О." validatorMessage="Длина Ф.И.О. должна быть от 5 до 100 символов">
+                            <f:validateLength minimum="5" maximum="100"  />
+                        </h:inputText>
+
+                        <h:outputText value="Должность" />
+                        <h:selectOneMenu value="#{employeeEditBean.post}" style="width: 100%">
+                            <f:selectItems value="#{employeeEditBean.posts}" var="pos" itemLabel="#{pos.name}" itemValue="#{pos.id}" />
+                        </h:selectOneMenu>
+                        
+                        <h:outputText value="Подразделение" />
+                        <h:selectOneMenu value="#{employeeEditBean.depart}" style="width: 100%">
+                            <f:selectItems value="#{employeeEditBean.departs}" var="dep" itemLabel="#{dep.name}" itemValue="#{dep.id}" />
+                        </h:selectOneMenu>
+
+                        <h:outputText value="Бригадир" />
+                        <h:selectOneMenu value="#{employeeEditBean.boss}" style="width: 100%" required="true" requiredMessage="Не заполнен бригадир">
+                            <f:selectItems value="#{employeeEditBean.bosses}" var="bos" itemLabel="#{bos.name}" itemValue="#{bos.id}" />
+                        </h:selectOneMenu>
+
+                        <h:outputText value="Является бригадиром" />
+                        <h:selectBooleanCheckbox value="#{employeeEditBean.iamboss}" style="margin-left: 0" />                        
+                        
+                        <h:outputText value="Работает" />
+                        <h:selectBooleanCheckbox value="#{employeeEditBean.enabled}" style="margin-left: 0" />                        
+                        
+                        <h:inputHidden value="#{employeeEditBean.id}" />
+                        
+                    </h:panelGrid>
+                   
+                     
+
+                    <h:commandButton type="submit" value="Сохранить" action="#{employeeEditBean.onAction}" />
+                    <h:outputText value="&#160;" escape="false" />
+                    <h:outputText value="&#160;" escape="false" />
+                    <h:commandButton type="submit" value="Отмена" action="employeelist" immediate="true" />
+                    
+                    <h:panelGroup layout="block" style="height: 100px; margin-top: 10px">
+                        <h:message for="emplname" style="color:red; font-size: 12px; font-weight: bold; margin:8px;"/>
+                        <br />
+                    </h:panelGroup>
+                    
+                    
+                </rich:panel>
+                
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

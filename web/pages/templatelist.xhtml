@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j">
+    <ui:composition template="../WEB-INF/templates/common.xhtml" >
+        <ui:define name="windowTitle">
+            <title>Список шаблонов графиков</title>
+            <h:outputStylesheet library="css" name="templates.css" />
+        </ui:define>
+
+        <ui:define name="sectionName">
+            Список шаблонов графиков
+        </ui:define>
+
+        <ui:define name="sectionMenu">
+            <h:commandLink value="Добавить" action="#{templatesBean.addTemplate}" class="links" />
+            <h:outputText value="&#160;&#160;&#160;&#160;" escape="false" />
+
+            <h:commandLink value="Удалить" class="links">
+                <rich:componentControl target="popupDeletePanel" operation="show" />                    
+            </h:commandLink>
+
+
+            <rich:popupPanel id="popupDeletePanel" modal="false" width="300" height="140" resizeable="false" moveable="false" >
+                <f:facet name="header">
+                    <h:outputText value="Удаление" />
+                </f:facet>
+                <f:facet name="controls">
+                    <h:outputLink value="#" onclick="#{rich:component('popupDeletePanel')}.hide(); return false;" style="text-decoration: none">
+                        X
+                    </h:outputLink>
+                </f:facet>
+
+                <h:panelGroup id="block1" layout="block" style="text-align: center; margin: 20px 0 20px 0; font-size: 12px; font-weight: bold">
+                    <h:outputText value="Удалить выбранные элементы ?" />
+                </h:panelGroup>
+
+                <h:panelGroup id="block2" layout="block" style="text-align: center">
+
+                    <a4j:commandButton value="Удалить" id="del" actionListener="#{templatesBean.delTemplate}" render="templDataTable" oncomplete="#{rich:component('popupDeletePanel')}.hide(); return false;" />
+
+                    <h:outputText value="&#160;" escape="false" />
+                    <h:outputText value="&#160;" escape="false" />
+                    <h:outputText value="&#160;" escape="false" />
+                    <h:outputText value="&#160;" escape="false" />
+
+                    <a4j:commandButton value="Отмена" id="close" onclick="#{rich:component('popupDeletePanel')}.hide(); return false;" />
+                </h:panelGroup>
+
+            </rich:popupPanel>
+
+
+        </ui:define>
+
+        <ui:define name="sectionContent">
+            <rich:extendedDataTable value="#{templatesBean.templList}" var="templ" id="templDataTable"
+                                    styleClass="centerTable"
+                                    clientRows="100" 
+                                    selectionMode="single" selection="#{templatesBean.templCollectSelect}" rowKeyVar="rowId">
+
+
+                <rich:column width="35px" >
+                    <f:facet name="header">...</f:facet>
+                    <h:selectBooleanCheckbox value="#{templ.marked}" />
+                </rich:column>
+
+                <rich:column width="35px">
+                    <f:facet name="header">№</f:facet>
+                        #{rowId + 1}
+                </rich:column>
+
+                <rich:column width="380px">
+                    <f:facet name="header">Название графика</f:facet>
+                        #{templ.name}
+                </rich:column>
+
+                <rich:column width="255px">
+                    <f:facet name="header">Автор</f:facet>
+                        #{templ.author}
+                </rich:column>
+
+                <rich:column width="35px">
+                    <f:facet name="header"/>
+                    <h:commandLink action="#{templatesBean.editTemplate}">
+                        <f:param name="templId" value="#{templ.id}" />
+                        <h:graphicImage library="images" name="edit.png" />
+                    </h:commandLink>
+                </rich:column>
+
+            </rich:extendedDataTable>
+
+        </ui:define>
+
+    </ui:composition>
+</html>
+

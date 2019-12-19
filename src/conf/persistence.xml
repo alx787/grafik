@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="GrafikPU" transaction-type="JTA">
+    <jta-data-source>jdbc/grafik</jta-data-source>
+    <class>ru.vrsp.grafik.entity.Depart</class>
+    <class>ru.vrsp.grafik.entity.Employees</class>
+    <class>ru.vrsp.grafik.entity.Grafbody</class>
+    <class>ru.vrsp.grafik.entity.Grafhead</class>
+    <class>ru.vrsp.grafik.entity.Users</class>
+    <class>ru.vrsp.grafik.entity.Graftemplate</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+    </properties>
+  </persistence-unit>
+</persistence>

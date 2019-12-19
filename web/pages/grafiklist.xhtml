@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:rich="http://richfaces.org/rich">
+    <ui:composition template="../WEB-INF/templates/common.xhtml" >
+            <ui:define name="windowTitle">
+                <title>Графики работы</title>
+                <h:outputStylesheet library="css" name="grafiks.css" />
+            </ui:define>
+
+            <ui:define name="sectionName">
+                Графики работы
+            </ui:define>
+        
+            <ui:define name="sectionMenu">
+                <h:commandLink value="Добавить" action="#{grafiksBean.addGrafik}" class="links" />
+                <h:outputText value="&#160;&#160;&#160;&#160;" escape="false" />
+                <h:commandLink value="Удалить" action="#{grafiksBean.delGrafik}" class="links" />
+                
+                <h:outputText value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" escape="false" />
+                <h:outputText value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" escape="false" />
+                <h:outputText value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" escape="false" />
+                <h:outputText value="Период:" style="font-weight: bold" />
+                <h:outputText value="&#160;&#160;&#160;&#160;&#160;" escape="false" />
+                <rich:calendar value="#{grafiksBean.periodBegin}" datePattern="dd MM yyyy" inputStyle="width: 70px" />
+                <h:outputText value=" - " style="font-weight: bold" />
+                <rich:calendar value="#{grafiksBean.periodEnd}" datePattern="dd MM yyyy" inputStyle="width: 70px" />
+                <h:outputText value="&#160;&#160;&#160;&#160;&#160;" escape="false" />
+                <h:commandButton value="Обновить" action="#{grafiksBean.refreshGrafik}" />
+            </ui:define>
+
+            <ui:define name="sectionContent">
+                <rich:extendedDataTable value="#{grafiksBean.grafikList}" var="grafik" id="grafikDataTable"
+                                        styleClass="centerTable"
+                                        clientRows="20" columnClasses="centerAlign,centerAlign,leftAlign,leftAlign,leftAlign,centerAlign"
+                                        selectionMode="single" selection="#{grafiksBean.grafikCollectSelect}" rowKeyVar="id">
+
+                    <rich:column width="35px" >
+                        <f:facet name="header">...</f:facet>
+                        <h:selectBooleanCheckbox value="#{grafik.marked}" />
+                    </rich:column>
+                    
+                    <rich:column width="60px">
+                        <f:facet name="header">Период</f:facet>
+                        <h:outputText value="#{grafik.period}" >
+                            <f:convertDateTime locale="RU" pattern="YYYY - MM" />
+                        </h:outputText>
+                    </rich:column>
+                    
+                    <rich:column width="230px">
+                        <f:facet name="header">Подразделение</f:facet>
+                            #{grafik.departid.name}
+                    </rich:column>
+
+                    <rich:column width="200px">
+                        <f:facet name="header">Комментарий</f:facet>
+                            #{grafik.coment}
+                    </rich:column>
+
+                    <rich:column width="180px">
+                        <f:facet name="header">Автор</f:facet>
+                            #{grafik.userid.name}
+                    </rich:column>
+                    
+                    <rich:column width="35px">
+                        <f:facet name="header"/>
+                        <h:commandLink action="#{grafiksBean.editGrafik}">
+                            <f:param name="grafikId" value="#{grafik.id}" />
+                            <h:graphicImage library="images" name="edit.png" />
+                        </h:commandLink>
+                    </rich:column>
+
+                </rich:extendedDataTable>
+
+            </ui:define>
+        
+    </ui:composition>
+</html>
+

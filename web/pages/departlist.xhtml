@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:rich="http://richfaces.org/rich">
+    <ui:composition template="../WEB-INF/templates/common.xhtml" >
+            <ui:define name="windowTitle">
+                <title>Список подразделений</title>
+                <h:outputStylesheet library="css" name="posts.css" />
+            </ui:define>
+
+            <ui:define name="sectionName">
+                Список подразделений
+            </ui:define>
+        
+            <ui:define name="sectionMenu">
+                <h:commandLink value="Добавить" action="#{departsBean.addDepart()}" class="links" >
+                    <f:param name="depId" value="0" />
+                </h:commandLink>
+            </ui:define>
+
+            <ui:define name="sectionContent">
+                <rich:extendedDataTable value="#{departsBean.depList}" var="dep" id="depDataTable"
+                                        styleClass="centerTable"
+                                        clientRows="100" columnClasses="leftAlign,centerAlign,centerAlign"
+                                        selectionMode="single" selection="#{departsBean.depCollectSelect}" rowKeyVar="id">
+
+                    <rich:column width="460px">
+                        <f:facet name="header">Название подразделения</f:facet>
+                            #{dep.name}
+                    </rich:column>
+
+                    <rich:column width="240px">
+                        <f:facet name="header">Пользователь</f:facet>
+                            #{dep.user.name}
+                    </rich:column>
+                    
+                    <rich:column width="40px">
+                        <f:facet name="header"/>
+                        <h:commandLink action="#{departsBean.editDepart()}">
+                            <f:param name="depId" value="#{dep.id}" />
+                            <h:graphicImage library="images" name="edit.png" />
+                        </h:commandLink>
+                    </rich:column>
+
+                </rich:extendedDataTable>
+
+            </ui:define>
+        
+    </ui:composition>
+</html>
+

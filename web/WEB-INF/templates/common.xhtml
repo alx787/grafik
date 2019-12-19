@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <ui:insert name="windowTitle">
+            <title>
+                -- заголовок окна --
+            </title>
+        </ui:insert>
+        <h:outputStylesheet library="css" name="common.css" />
+    </h:head>
+    <h:body>
+
+        <h:panelGrid columns="1" class="centerPanel" >
+            <h:form id="mainform">
+                <rich:toolbar height="24" itemSeparator="line" style="margin: 0 0 10px 0; ">
+                    <rich:toolbarGroup>
+                        <h:link value="Графики" outcome="grafiklist" class="links"/>                    
+                    </rich:toolbarGroup>
+                    <rich:toolbarGroup>                       
+                        <h:link value="Шаблоны" outcome="templatelist"  class="links"/>                    
+                        <h:link value="Сотрудники" outcome="employeelist"  class="links"/>                    
+                        <h:link value="Подразделения" outcome="departlist" class="links"/>                    
+                        <h:link value="Должности" outcome="postlist" class="links"/>                    
+                        <h:link value="Расстановка" outcome="rasstanovka" class="links"/>                    
+                    </rich:toolbarGroup>
+                    <rich:toolbarGroup>                       
+                        <h:commandLink value="Выход" action="#{userBean.tryLogout}" class="links"/>                    
+                    </rich:toolbarGroup>
+                    
+                    <rich:toolbarGroup location="right">
+                        <h:outputText value="#{userBean.name}" />
+                    </rich:toolbarGroup>
+                    
+                </rich:toolbar>
+
+                <rich:panel>
+                    <f:facet name="header">
+                        
+                        <ui:insert name="sectionName">
+                            -- название раздела --
+                        </ui:insert>
+                        
+                    </f:facet>
+
+                    <h:panelGroup layout="block" style="margin-bottom: 10px">
+                        
+                            <ui:insert name="sectionMenu">
+                                -- меню раздела --
+                            </ui:insert>
+                        
+                    </h:panelGroup>
+
+                    <ui:insert name="sectionContent">
+                        -- содержимое раздела --
+                    </ui:insert>
+
+                </rich:panel>
+
+            </h:form>
+
+        </h:panelGrid>
+
+    </h:body>
+</html>
+
+

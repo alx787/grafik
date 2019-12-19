@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j">
+    <h:body>
+        <ui:composition template="../WEB-INF/templates/common.xhtml" >
+            <ui:define name="windowTitle">
+                <title>Список сотрудников</title>
+                <h:outputStylesheet library="css" name="employees.css" />
+            </ui:define>
+
+            <ui:define name="sectionName">
+                Список сотрудников
+            </ui:define>
+
+            <ui:define name="sectionMenu">
+                
+                <h:messages style="font-size: 12px; font-weight: bold; color: #FF0000;" />
+                
+                <h:commandLink value="Добавить" action="#{employeesBean.addEmployee}" class="links" >
+                    <f:param name="emplId" value="0" />
+                </h:commandLink>
+
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+
+                <h:commandLink value="Удалить" class="links">
+                    <rich:componentControl target="popupDeletePanel" operation="show" />
+                </h:commandLink>
+                
+                <h:outputText value="&#160;&#160;&#160;&#160;&#160;" escape="false" />
+                <h:outputText value="&#160;&#160;&#160;&#160;&#160;" escape="false" />
+                
+                <h:selectBooleanCheckbox value="#{employeesBean.showAll}" />
+                <h:outputText value="показать уволенных" />
+                
+                <h:outputText value="&#160;&#160;" escape="false" />
+                <h:outputText value="&#160;&#160;" escape="false" />
+                <h:outputText value="&#160;&#160;" escape="false" />
+                <h:outputText value="&#160;&#160;" escape="false" />
+                
+                <h:outputText value="подразделение" />
+                <h:outputText value="&#160;&#160;" escape="false" />
+                <h:outputText value="&#160;&#160;" escape="false" />
+                <h:selectOneMenu value="#{employeesBean.selectDepartId}">
+                    <f:selectItem itemLabel="---" itemValue="#{null}"  />
+                    <f:selectItems value="#{employeesBean.depList}" var="dep" itemLabel="#{dep.name}" itemValue="#{dep.id}" />
+                </h:selectOneMenu>
+                
+                <h:outputText value="&#160;&#160;" escape="false" />
+                <h:outputText value="&#160;&#160;" escape="false" />
+                <h:outputText value="&#160;&#160;" escape="false" />
+                <h:outputText value="&#160;&#160;" escape="false" />
+                
+                <a4j:commandButton value="Обновить" actionListener="#{employeesBean.refreshEmployees}" render="emplDataTable" />
+                
+
+                <rich:popupPanel id="popupDeletePanel" modal="false" width="300" height="140" resizeable="false" moveable="false" >
+                    <f:facet name="header">
+                        <h:outputText value="Удаление" />
+                    </f:facet>
+                    <f:facet name="controls">
+                        <h:outputLink value="#" onclick="#{rich:component('popupDeletePanel')}.hide(); return false;" style="text-decoration: none">
+                            X
+                        </h:outputLink>
+                    </f:facet>
+
+                    <h:panelGroup id="block1" layout="block" style="text-align: center; margin: 20px 0 20px 0; font-size: 12px; font-weight: bold">
+                        <h:outputText value="Удалить выбранные элементы ?" />
+                    </h:panelGroup>
+
+                    <h:panelGroup id="block2" layout="block" style="text-align: center">
+
+                        <a4j:commandButton value="Удалить" id="del" actionListener="#{employeesBean.delEmployee}" render="emplDataTable" oncomplete="#{rich:component('popupDeletePanel')}.hide(); return false;" />
+
+                        <h:outputText value="&#160;" escape="false" />
+                        <h:outputText value="&#160;" escape="false" />
+                        <h:outputText value="&#160;" escape="false" />
+                        <h:outputText value="&#160;" escape="false" />
+                        
+                        <a4j:commandButton value="Отмена" id="close" onclick="#{rich:component('popupDeletePanel')}.hide(); return false;" />
+                    </h:panelGroup>
+
+                </rich:popupPanel>
+
+
+            </ui:define>
+
+            <ui:define name="sectionContent">
+                <rich:extendedDataTable value="#{employeesBean.empList}" var="empl" id="emplDataTable"
+                                        styleClass="centerTable"
+                                        clientRows="100" columnClasses="centerAlign,leftAlign,leftAlign,leftAlign,centerAlign,centerAlign,centerAlign"
+                                        selectionMode="single" selection="#{employeesBean.empCollectSelect}" rowKeyVar="id">
+
+                    <rich:column width="35px" >
+                        <f:facet name="header">...</f:facet>
+                        <h:selectBooleanCheckbox value="#{empl.marked}" />
+                    </rich:column>
+
+                    <rich:column width="215px">
+                        <f:facet name="header">ФИО</f:facet>
+                            #{empl.name}
+                    </rich:column>
+                    <rich:column width="200px">
+                        <f:facet name="header">Должность</f:facet>
+                            #{empl.postid.name}
+                    </rich:column>
+                    <rich:column width="180px">
+                        <f:facet name="header">Подразделение</f:facet>
+                            #{empl.departid.name}
+                    </rich:column>
+                    
+                    <rich:column width="30px">
+                        <f:facet name="header">Б</f:facet>
+                            #{empl.iamboss?"Б":""}
+                    </rich:column>
+                    
+                    <rich:column width="35px">
+                        <f:facet name="header"/>
+                        <h:graphicImage library="images" name="#{empl.enabled?'user.png':'userdel.png'}" />
+                    </rich:column>
+                    <rich:column width="35px">
+                        <f:facet name="header"/>
+                        <h:commandLink action="#{employeesBean.editEmployee}">
+                            <f:param name="emplId" value="#{empl.id}" />
+                            <h:graphicImage library="images" name="edit.png" />
+                        </h:commandLink>
+                    </rich:column>
+
+                </rich:extendedDataTable>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

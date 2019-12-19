@@ -1,0 +1,22 @@
+
+.panel {
+    padding: 0;
+    margin: 100px auto 0 auto;
+    width: 205px;
+}
+
+.panelcentered {
+    margin: 0 auto;
+    width: 205px;
+}
+
+.links {
+    text-decoration: none;
+}
+
+.messages {
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-size: 12px;
+    color: #FF0000;
+    font-weight: bold;
+}

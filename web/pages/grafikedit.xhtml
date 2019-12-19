@@ -1,0 +1,367 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j">
+    <h:body>
+        <ui:composition template="../WEB-INF/templates/common.xhtml" >
+
+
+            <ui:define name="windowTitle">
+                <title>#{grafikEditBean.grafName}</title>
+                <h:outputStylesheet library="css" name="grafiks.css" />
+                <h:outputStylesheet library="css" name="grafikedit.css" />
+                <h:outputScript library="scripts" name="grafikedit.js" />
+            </ui:define>
+
+            <ui:define name="sectionName">
+                #{grafikEditBean.grafName}
+            </ui:define>
+
+            <ui:define name="sectionMenu">
+
+                <!-- панель добавления сотрудника -->
+                <rich:popupPanel id="popupEmplAddPanel" modal="false" width="700" height="350" resizeable="false" moveable="false" domElementAttachment="form">
+                    <f:facet name="header">
+                        <h:outputText value="Добавить сотрудника" />
+                    </f:facet>
+                    <f:facet name="controls">
+                        <h:outputLink value="#" onclick="#{rich:component('popupEmplAddPanel')}.hide();
+                                return false;" style="text-decoration: none">
+                            X
+                        </h:outputLink>
+                    </f:facet>
+
+                    <h:panelGroup layout="block" style="margin-bottom: 10px; width: 675px;" >
+                        <h:commandButton value="Пометить всех" type="button" onclick="markAllAddEmpl(true)" />
+                        <h:outputText value="&#160;&#160;" escape="false" />
+                        <h:commandButton value="Снять пометки" type="button" onclick="markAllAddEmpl(false)" />
+                    </h:panelGroup>
+
+
+                    <rich:extendedDataTable value="#{grafikEditBean.employeesList}" var="empl" rows="0"
+                                            id="emplListTable" rowKeyVar="rkve" style="width: 675px; height: 240px">
+                        <rich:column width="22px">
+                            <f:facet name="header">...</f:facet>
+                            <h:selectBooleanCheckbox value="#{empl.marked}" />
+                        </rich:column>
+                        <rich:column width="30px">
+                            <f:facet name="header">№</f:facet>
+                            <h:outputText value="#{rkve + 1}" style="display: block; margin: 3px 7px" />
+                        </rich:column>
+                        <rich:column width="200px">
+                            <f:facet name="header">Сотрудник</f:facet>
+                            <h:outputText value="#{empl.name}" style="display: block; margin: 3px 7px" />
+                        </rich:column>
+                        
+                        <rich:column width="200px">
+                            <f:facet name="header">Должность</f:facet>
+                            <h:outputText value="#{empl.postid.name}" style="display: block; margin: 3px 7px" />
+                        </rich:column>
+                        
+                        <rich:column width="200px">
+                            <f:facet name="header">Подразделение</f:facet>
+                            <h:outputText value="#{empl.departid.name}" style="display: block; margin: 3px 7px" />
+                        </rich:column>
+                        
+                    </rich:extendedDataTable>
+
+                    <h:panelGroup layout="block" style="margin-top: 10px; width: 575px;" >
+                        <a4j:commandButton value="Добавить" actionListener="#{grafikEditBean.addEmployees}" render="grafDataTable" oncomplete="#{rich:component('popupEmplAddPanel')}.hide(); return false;" />
+                        <h:outputText value="&#160;&#160;" escape="false" />
+                        <a4j:commandButton value="Отмена" id="close" onclick="#{rich:component('popupEmplAddPanel')}.hide(); return false;" />                        
+                    </h:panelGroup>
+
+                </rich:popupPanel>
+
+
+                <h:panelGroup style="margin-bottom: 10px; width: 100%" layout="block" >
+                    <h:commandLink value="OK" action="#{grafikEditBean.onActionOK()}" class="links" />
+                    <h:outputText value="&#160;&#160;&#160;&#160;" escape="false" />
+                    <h:commandLink id="olink" value="Сохранить" action="#{grafikEditBean.onActionSave()}" class="links" />
+                    <h:outputText value="&#160;&#160;&#160;&#160;" escape="false" />
+                    <h:link value="Отмена" outcome="grafiklist" class="links"/>
+
+                    <h:outputText value="&#160;&#160;&#160;&#160;" escape="false" />
+                    <h:outputText value="&#160;&#160;&#160;&#160;" escape="false" />
+                    <h:outputText value="&#160;&#160;&#160;&#160;" escape="false" />
+
+                    <h:outputText value="Отдел: " />
+                    <h:selectOneMenu value="#{grafikEditBean.selectDepartId}" >
+                        <f:selectItems value="#{grafikEditBean.depList}" var="deps" itemValue="#{deps.id}" itemLabel="#{deps.name}" />
+                    </h:selectOneMenu>
+
+                </h:panelGroup>
+
+                <h:panelGroup style="margin-bottom: 5px; width: 100%" layout="block" >
+
+                    <h:selectOneMenu value="#{grafikEditBean.selectBrig}">
+                        <f:selectItem itemValue="#{null}" itemLabel="-- выберите бригадира --" />
+                        <f:selectItems value="#{grafikEditBean.brigList}" var="brig" itemLabel="#{brig.name}" itemValue="#{brig.id}" />
+                    </h:selectOneMenu>
+
+                    <h:outputText value="&#160;&#160;" escape="false" />
+                    <a4j:commandButton value="Добавить строки" actionListener="#{grafikEditBean.showAddEmplPanel}" oncomplete="#{rich:component('popupEmplAddPanel')}.show()" render="emplListTable">
+                    </a4j:commandButton>
+
+                    <h:outputText value="&#160;&#160;" escape="false" />
+
+                    <a4j:commandButton value="Удалить строки" actionListener="#{grafikEditBean.delEmployees}" render="grafDataTable">
+                    </a4j:commandButton>
+
+
+                    <h:outputText value="&#160;&#160;&#160;&#160;&#160;&#160;" escape="false" />
+                    <h:commandButton value="Пометить всех" type="button" onclick="markAllGrafbody(true)" />
+                    <h:outputText value="&#160;&#160;" escape="false" />
+                    <h:commandButton value="Снять пометки" type="button" onclick="markAllGrafbody(false)" />
+
+                    <h:outputText value="&#160;&#160;&#160;&#160;&#160;&#160;" escape="false" />
+                    <a4j:commandButton value="Упорядочить по бриг" actionListener="#{grafikEditBean.onSortByBrig}" render="grafDataTable">
+                    </a4j:commandButton>
+                    
+                    
+                </h:panelGroup>
+
+
+                <h:panelGroup style="margin-bottom: 5px; width: 100%" layout="block" styleClass="panelGray" >
+
+                    <h:outputText value="ЗАПОЛНИТЬ ПО ГРАФИКУ" style="font-weight: bold" />
+                    <h:outputText value="&#160;&#160;&#160;&#160;&#160;&#160;" escape="false" />
+
+                    <h:outputText value="График:" />
+                    <h:outputText value="&#160;&#160;" escape="false" />
+
+                    <h:selectOneMenu id="selTemplGraf" value="#{grafikEditBean.templIdSelect}" >
+                        <f:selectItem itemValue="#{null}" itemLabel="-----" />
+                        <f:selectItems value="#{grafikEditBean.templList}" var="templGr" itemValue="#{templGr.id}" itemLabel="#{templGr.name}" />
+                    </h:selectOneMenu>
+
+
+                    <h:outputText value="&#160;&#160;" escape="false" />
+                    <a4j:commandButton value="Заполнить" actionListener="#{grafikEditBean.fillOnTemplate}" render="grafDataTable" />
+                    
+
+                    <h:outputText value="&#160;&#160;&#160;&#160;&#160;&#160;" escape="false" />
+                    <h:commandButton type="button" onclick="shiftLeft()" value="&lt;=" />
+                    <h:outputText value="&#160;&#160;" escape="false" />
+                    <h:commandButton type="button" onclick="shiftRight()" value="=&gt;" />
+
+                    <h:outputText value="&#160;&#160;&#160;&#160;&#160;&#160;" escape="false" />
+                    <h:outputText value="&#160;&#160;&#160;&#160;&#160;&#160;" escape="false" />
+
+                    <h:commandButton value="Получить документ !!!" action="#{grafikEditBean.downloadGrafik}" />
+
+                </h:panelGroup>
+
+                <h:panelGroup style="margin-bottom: 5px; width: 100%" layout="block">
+
+
+
+                    <h:outputText value="Месяц: " />
+
+                    <h:selectOneMenu id="grafikMonth" value="#{grafikEditBean.grafMonth}" >
+                        <f:selectItem itemValue="1" itemLabel="Январь" />
+                        <f:selectItem itemValue="2" itemLabel="Февраль" />
+                        <f:selectItem itemValue="3" itemLabel="Март" />
+                        <f:selectItem itemValue="4" itemLabel="Апрель" />
+                        <f:selectItem itemValue="5" itemLabel="Май" />
+                        <f:selectItem itemValue="6" itemLabel="Июнь" />
+                        <f:selectItem itemValue="7" itemLabel="Июль" />
+                        <f:selectItem itemValue="8" itemLabel="Август" />
+                        <f:selectItem itemValue="9" itemLabel="Сентябрь" />
+                        <f:selectItem itemValue="10" itemLabel="Октябрь" />
+                        <f:selectItem itemValue="11" itemLabel="Ноябрь" />
+                        <f:selectItem itemValue="12" itemLabel="Декабрь" />
+                    </h:selectOneMenu>
+
+                    <h:outputText value="&#160;&#160;&#160;&#160;&#160;&#160;" escape="false" />
+
+                    <h:outputText value="Год: " />
+                    <rich:inputNumberSpinner id="grafikYear" value="#{grafikEditBean.grafYear}" minValue="0" maxValue="9999" enableManualInput="true" style="font-size: 11px;" inputSize="4" />
+
+                    <h:outputText value="&#160;&#160;&#160;&#160;&#160;&#160;" escape="false" />
+
+                    <h:outputText value="Комментарий: " />
+                    <h:inputText value="#{grafikEditBean.grafName}" style="width: 410px" />
+
+                </h:panelGroup>
+
+            </ui:define>
+
+            <ui:define name="sectionContent">
+
+                <rich:extendedDataTable value="#{grafikEditBean.grafList}" var="graf" id="grafDataTable"
+                                        style="width:750px; height:365px;" 
+                                        clientRows="100" frozenColumns="4" 
+                                        selectionMode="single" rowKeyVar="rowKey" onrowkeydown="ignoreEnterBackspace();" >
+
+                    <rich:column width="30px">
+                        <f:facet name="header">...</f:facet>
+                        <h:selectBooleanCheckbox id="_rowId" value="#{graf.marked}" style="display: block; margin: 3px 7px" />
+                    </rich:column>
+
+                    <rich:column width="25px">
+                        <f:facet name="header">№</f:facet>
+                        <h:outputText value="#{rowKey + 1}" style="display: block; margin: 3px 7px" />
+                    </rich:column>
+
+                    <rich:column width="140px">
+                        <f:facet name="header">Сотрудник</f:facet>
+                        <h:outputText value="#{graf.employeeid.name}" class="#{graf.employeeid.iamboss?'sotrboss':'sotrsimple'}" />
+                    </rich:column>
+
+                    <rich:column width="35px" >
+                        <f:facet name="header">Итог</f:facet>
+                        <h:inputText id="totalHours" value="#{graf.totalHours}" style="border: none; width: 35px; text-align: center; font-weight: bold" readonly="true" />
+                    </rich:column>
+
+                    <rich:column width="25px">
+                        <f:facet name="header">1</f:facet>
+                        <h:inputText id="day1" value="#{graf.day1}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header" >2</f:facet>
+                        <h:inputText id="day2" value="#{graf.day2}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">3</f:facet>
+                        <h:inputText id="day3" value="#{graf.day3}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">4</f:facet>
+                        <h:inputText id="day4" value="#{graf.day4}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">5</f:facet>
+                        <h:inputText id="day5" value="#{graf.day5}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">6</f:facet>
+                        <h:inputText id="day6" value="#{graf.day6}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">7</f:facet>
+                        <h:inputText id="day7" value="#{graf.day7}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">8</f:facet>
+                        <h:inputText id="day8" value="#{graf.day8}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">9</f:facet>
+                        <h:inputText id="day9" value="#{graf.day9}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">10</f:facet>
+                        <h:inputText id="day10" value="#{graf.day10}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+
+
+                    <rich:column width="25px">
+                        <f:facet name="header">11</f:facet>
+                        <h:inputText id="day11" value="#{graf.day11}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header" >12</f:facet>
+                        <h:inputText id="day12" value="#{graf.day12}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">13</f:facet>
+                        <h:inputText id="day13" value="#{graf.day13}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">14</f:facet>
+                        <h:inputText id="day14" value="#{graf.day14}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">15</f:facet>
+                        <h:inputText id="day15" value="#{graf.day15}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">16</f:facet>
+                        <h:inputText id="day16" value="#{graf.day16}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">17</f:facet>
+                        <h:inputText id="day17" value="#{graf.day17}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">18</f:facet>
+                        <h:inputText id="day18" value="#{graf.day18}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">19</f:facet>
+                        <h:inputText id="day19" value="#{graf.day19}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">20</f:facet>
+                        <h:inputText id="day20" value="#{graf.day20}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+
+
+                    <rich:column width="25px">
+                        <f:facet name="header">21</f:facet>
+                        <h:inputText id="day21" value="#{graf.day21}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header" >22</f:facet>
+                        <h:inputText id="day22" value="#{graf.day22}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">23</f:facet>
+                        <h:inputText id="day23" value="#{graf.day23}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">24</f:facet>
+                        <h:inputText id="day24" value="#{graf.day24}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">25</f:facet>
+                        <h:inputText id="day25" value="#{graf.day25}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">26</f:facet>
+                        <h:inputText id="day26" value="#{graf.day26}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">27</f:facet>
+                        <h:inputText id="day27" value="#{graf.day27}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">28</f:facet>
+                        <h:inputText id="day28" value="#{graf.day28}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">29</f:facet>
+                        <h:inputText id="day29" value="#{graf.day29}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+                    <rich:column width="25px">
+                        <f:facet name="header">30</f:facet>
+                        <h:inputText id="day30" value="#{graf.day30}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: center"  />
+                    </rich:column>
+
+                    <rich:column width="45px">
+                        <f:facet name="header">31</f:facet>
+                        <h:inputText id="day31" value="#{graf.day31}" onkeyup="refreshAllRow()" style="border: none; width: 25px; text-align: left"  />
+                    </rich:column>
+
+                </rich:extendedDataTable>
+
+                <h:panelGroup style="width:770px; margin-top: 10px" layout="block" rendered="false" >
+
+                    <h:commandButton type="submit" value="Сохранить" action="aaa" />
+                    <h:outputText value="&#160;" escape="false" />
+                    <h:outputText value="&#160;" escape="false" />
+                    <h:commandButton type="submit" value="Отмена" action="grafiklist" immediate="true" />
+                </h:panelGroup>
+
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
+

@@ -1,0 +1,28 @@
+
+.toppanel {
+    margin: 0 auto;
+    width: 800px;
+}
+
+.links {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.centerPanel {
+    margin: 0 auto;
+    padding: 0;
+    height: 580px;
+    width:750px;
+}
+
+.centerTable {
+    width:750px;
+    height:450px;   
+}
+
+/*
+.centerPanel tr {
+    vertical-align: top;
+}
+*/

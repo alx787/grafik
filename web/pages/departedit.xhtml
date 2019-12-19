@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich">
+    <h:body>
+        <ui:composition template="../WEB-INF/templates/common.xhtml" >
+            
+            <ui:define name="windowTitle">
+                <title>#{departEditBean.name}</title>
+                <h:outputStylesheet library="css" name="departs.css" />
+            </ui:define>
+
+            <ui:define name="sectionName">
+                #{departEditBean.name}
+            </ui:define>
+
+            <ui:define name="sectionMenu">
+                <h:commandLink value="OK" action="#{departEditBean.onActionOK()}" class="links" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:commandLink id="olink" value="Сохранить" action="#{departEditBean.onActionSave()}" class="links" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:link value="Отмена" outcome="departlist" class="links"/>
+            </ui:define>
+
+            <ui:define name="sectionContent">
+                
+                <rich:panel styleClass="centerTable" style="width:750px; height:450px;">
+                    <h:panelGrid columns="2" columnClasses="col_1,col_2" style="margin-bottom: 10px">
+                        <h:outputText value="Номер" />
+                        <h:outputText value="#{departEditBean.id}" />
+
+                        <h:outputText value="Название подразделения" />
+                        <h:inputText id="departname" value="#{departEditBean.name}" 
+                                     style="width: 100%" required="true" 
+                                     requiredMessage="Не заполнено название подразделения" 
+                                     validatorMessage="Длина должна быть от 5 до 100 символов">
+                            <f:validateLength minimum="5" maximum="100"  />
+                        </h:inputText>
+
+                        <h:outputText value="Пользователь" rendered="#{departEditBean.currentUser.adm}" />
+                        <h:selectOneMenu value="#{departEditBean.userId}" rendered="#{departEditBean.currentUser.adm}" >
+                            <f:selectItems value="#{departEditBean.userList}" var="usr" itemValue="#{usr.id}" itemLabel="#{usr.name}" />
+                        </h:selectOneMenu>
+                            
+                        
+                        
+                        <h:inputHidden value="#{departEditBean.id}" />
+                        
+                    </h:panelGrid>
+                   
+                     
+
+                    <h:commandButton type="submit" value="Сохранить" action="#{departEditBean.onActionSave()}" />
+                    <h:outputText value="&#160;" escape="false" />
+                    <h:outputText value="&#160;" escape="false" />
+                    <h:commandButton type="submit" value="Отмена" action="departlist" immediate="true" />
+                    
+                    <h:panelGroup layout="block" style="height: 100px; margin-top: 10px">
+                        <h:message for="departname" style="color:red; font-size: 12px; font-weight: bold; margin:8px;"/>
+                        <br />
+                    </h:panelGroup>
+                    
+                    
+                </rich:panel>
+                
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
+

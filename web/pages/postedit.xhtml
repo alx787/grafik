@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich">
+    <h:body>
+        <ui:composition template="../WEB-INF/templates/common.xhtml" >
+            
+            <ui:define name="windowTitle">
+                <title>Новая должность</title>
+                <h:outputStylesheet library="css" name="posts.css" />
+            </ui:define>
+
+            <ui:define name="sectionName">
+                Новая должность
+            </ui:define>
+
+            <ui:define name="sectionMenu">
+                <h:commandLink value="OK" action="#{postEditBean.onActionOK()}" class="links" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:commandLink id="olink" value="Сохранить" action="#{postEditBean.onActionSave()}" class="links" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:link value="Отмена" outcome="postlist" class="links"/>
+            </ui:define>
+
+            <ui:define name="sectionContent">
+                
+                <rich:panel styleClass="centerTable">
+                    <h:panelGrid columns="2" columnClasses="col_1,col_2" style="margin-bottom: 10px">
+                        <h:outputText value="Номер" />
+                        <h:outputText value="#{postEditBean.id}" />
+
+                        <h:outputText value="Должность" />
+                        <h:inputText id="postname" value="#{postEditBean.name}" 
+                                     style="width: 100%" required="true" 
+                                     requiredMessage="Не заполнена должность" 
+                                     validatorMessage="Длина должности должна быть от 5 до 100 символов">
+                            <f:validateLength minimum="5" maximum="100"  />
+                        </h:inputText>
+
+                        <h:outputText value="Порядок" />
+                        <h:inputText id="sortpost" value="#{postEditBean.sorting}" 
+                                     style="width: 100%" required="true" 
+                                     requiredMessage="Не заполнен порядок" 
+                                     validatorMessage="Значение порядка должно быть от 0 до 100"
+                                     converterMessage="Порядок должен быть числом" >
+                            <f:validateLongRange minimum="0" maximum="100"/>
+                        </h:inputText>
+                        
+                        <h:inputHidden value="#{postEditBean.id}" />
+                        
+                    </h:panelGrid>
+                   
+                     
+
+                    <h:commandButton type="submit" value="Сохранить" action="#{postEditBean.onActionSave()}" />
+                    <h:outputText value="&#160;" escape="false" />
+                    <h:outputText value="&#160;" escape="false" />
+                    <h:commandButton type="submit" value="Отмена" action="postlist" immediate="true" />
+                    
+                    <h:panelGroup layout="block" style="height: 100px; margin-top: 10px">
+                        <h:message for="postname" style="color:red; font-size: 12px; font-weight: bold; margin:8px;"/>
+                        <br />
+                        <h:message for="sortpost" style="color:red; font-size: 12px; font-weight: bold; margin:8px;"/>
+                    </h:panelGroup>
+                    
+                    
+                </rich:panel>
+                
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
+

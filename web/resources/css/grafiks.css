@@ -1,0 +1,46 @@
+
+.centerAlign {
+    text-align: center;
+    cursor: pointer;
+}
+
+.leftAlign {
+    text-align: left;
+    cursor: pointer;
+}
+
+.panelGray {
+/*    background-color: #F5F5F5;*/
+    background-color: #FAF0E6;
+}
+
+.weekendDay {
+    color: #FF0000;
+}
+
+.workDay {
+    
+}
+
+.notDay {
+    background-color: #FFFFFF;
+}
+
+
+
+/*
+
+.rich-table-cell {
+    padding: 0;
+}
+
+.col_1 {
+    text-align: left;
+    font-weight: bold;
+    width: 150px;
+}
+
+.col_2 {
+    width: 200px;
+}
+*/

@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j">
+    <ui:composition template="../WEB-INF/templates/common.xhtml" >
+        <ui:define name="windowTitle">
+            <title>Список должностей</title>
+            <h:outputStylesheet library="css" name="posts.css" />
+        </ui:define>
+
+        <ui:define name="sectionName">
+            Список должностей
+        </ui:define>
+
+        <ui:define name="sectionMenu">
+            <h:commandLink value="Добавить" action="#{postsBean.addPost()}" class="links" >
+                <f:param name="postId" value="0" />
+            </h:commandLink>
+        </ui:define>
+
+        <ui:define name="sectionContent">
+            <rich:extendedDataTable value="#{postsBean.postList}" var="post" id="postDataTable"
+                                    styleClass="centerTable"
+                                    clientRows="20" columnClasses="leftAlign,centerAlign,centerAlign"
+                                    sortPriority="#{postSortingBean.sortPriorities}"
+                                    selectionMode="single" selection="#{postsBean.postCollectSelect}" rowKeyVar="id">
+
+                <rich:column width="640px" sortBy="#{post.name}" sortOrder="#{postSortingBean.sortsOrders['name']}" sortType="custom">
+                    <f:facet name="header">
+
+                        <a4j:commandLink execute="@this" value="Название должности" render="postDataTable" action="#{postSortingBean.sort}" style="color: #000000">
+                            <f:param name="sortProperty" value="name"/>
+                        </a4j:commandLink>
+                        
+                    </f:facet>
+                    #{post.name}
+                </rich:column>
+                <rich:column width="65px" sortBy="#{post.sorting}" sortOrder="#{postSortingBean.sortsOrders['sorting']}" sortType="custom">
+                    <f:facet name="header">
+
+                        <a4j:commandLink execute="@this" value="Порядок" render="postDataTable" action="#{postSortingBean.sort}" style="color: #000000">
+                            <f:param name="sortProperty" value="sorting"/>
+                        </a4j:commandLink>
+                        
+                    </f:facet>
+                        #{post.sorting}
+                </rich:column>
+                <rich:column width="35px">
+                    <f:facet name="header"/>
+                    <h:commandLink action="#{postsBean.editPost()}">
+                        <f:param name="postId" value="#{post.id}" />
+                        <h:graphicImage library="images" name="edit.png" />
+                    </h:commandLink>
+                </rich:column>
+
+            </rich:extendedDataTable>
+
+        </ui:define>
+
+    </ui:composition>
+</html>
+

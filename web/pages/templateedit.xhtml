@@ -1,0 +1,216 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich">
+    <h:body>
+        <ui:composition template="../WEB-INF/templates/common.xhtml" >
+
+            <ui:define name="windowTitle">
+                <title>#{templateEditBean.name}</title>
+                <h:outputStylesheet library="css" name="templates.css" />
+                <h:outputScript library="scripts" name="templateedit.js" />
+            </ui:define>
+
+            <ui:define name="sectionName">
+                #{templateEditBean.name}
+            </ui:define>
+
+            <ui:define name="sectionMenu">
+                <h:commandLink value="OK" action="#{templateEditBean.onActionOK()}" class="links" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:commandLink id="olink" value="Сохранить" action="#{templateEditBean.onActionSave()}" class="links" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:outputText value="&#160;" escape="false" />
+                <h:link value="Отмена" outcome="templatelist" class="links"/>
+            </ui:define>
+
+            <ui:define name="sectionContent">
+
+                <rich:panel styleClass="centerTable">
+                    <h:panelGrid columns="2" columnClasses="col_1,col_2" style="margin-bottom: 10px">
+                        <h:outputText value="Номер" />
+                        <h:outputText value="#{templateEditBean.id}" />
+
+                        <h:outputText value="Название шаблона" />
+                        <h:inputText id="templname" value="#{templateEditBean.name}" 
+                                     style="width: 100%" required="true" 
+                                     requiredMessage="Не заполнено название шаблона" 
+                                     validatorMessage="Длина названия должна быть от 5 до 100 символов">
+                            <f:validateLength minimum="5" maximum="100"  />
+                        </h:inputText>
+
+                        <h:outputText value="Автор" />
+                        <h:inputText id="templauthor" value="#{templateEditBean.author}" style="width: 100%"  readonly="true"/>
+
+                        <h:outputText value="Итого часов" />
+                        <h:inputText id="totHours" value="#{templateEditBean.totalHours}" style="width: 100%"  readonly="true"/>
+                        
+                        
+                        <h:inputHidden value="#{templateEditBean.id}" />
+
+                    </h:panelGrid>
+
+
+
+                    <h:panelGrid columns="10" cellspacing="2"  >
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">1</f:facet>
+                            <h:inputText id="day_1" onkeyup="getTotalHours()" value="#{templateEditBean.val_1}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">2</f:facet>
+                            <h:inputText id="day_2" onkeyup="getTotalHours()" value="#{templateEditBean.val_2}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">3</f:facet>
+                            <h:inputText id="day_3" onkeyup="getTotalHours()" value="#{templateEditBean.val_3}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">4</f:facet>
+                            <h:inputText id="day_4" onkeyup="getTotalHours()" value="#{templateEditBean.val_4}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">5</f:facet>
+                            <h:inputText id="day_5" onkeyup="getTotalHours()" value="#{templateEditBean.val_5}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">6</f:facet>
+                            <h:inputText id="day_6" onkeyup="getTotalHours()" value="#{templateEditBean.val_6}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">7</f:facet>
+                            <h:inputText id="day_7" onkeyup="getTotalHours()" value="#{templateEditBean.val_7}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">8</f:facet>
+                            <h:inputText id="day_8" onkeyup="getTotalHours()" value="#{templateEditBean.val_8}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">9</f:facet>
+                            <h:inputText id="day_9" onkeyup="getTotalHours()" value="#{templateEditBean.val_9}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">10</f:facet>
+                            <h:inputText id="day_10" onkeyup="getTotalHours()" value="#{templateEditBean.val_10}" class="inputWidth" />
+                        </rich:panel>
+                        
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">11</f:facet>
+                            <h:inputText id="day_11" onkeyup="getTotalHours()" value="#{templateEditBean.val_11}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">12</f:facet>
+                            <h:inputText id="day_12" onkeyup="getTotalHours()" value="#{templateEditBean.val_12}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">13</f:facet>
+                            <h:inputText id="day_13" onkeyup="getTotalHours()" value="#{templateEditBean.val_13}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">14</f:facet>
+                            <h:inputText id="day_14" onkeyup="getTotalHours()" value="#{templateEditBean.val_14}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">15</f:facet>
+                            <h:inputText id="day_15" onkeyup="getTotalHours()" value="#{templateEditBean.val_15}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">16</f:facet>
+                            <h:inputText id="day_16" onkeyup="getTotalHours()" value="#{templateEditBean.val_16}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">17</f:facet>
+                            <h:inputText id="day_17" onkeyup="getTotalHours()" value="#{templateEditBean.val_17}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">18</f:facet>
+                            <h:inputText id="day_18" onkeyup="getTotalHours()" value="#{templateEditBean.val_18}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">19</f:facet>
+                            <h:inputText id="day_19" onkeyup="getTotalHours()" value="#{templateEditBean.val_19}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">20</f:facet>
+                            <h:inputText id="day_20" onkeyup="getTotalHours()" value="#{templateEditBean.val_20}" class="inputWidth" />
+                        </rich:panel>
+                        
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">21</f:facet>
+                            <h:inputText id="day_21" onkeyup="getTotalHours()" value="#{templateEditBean.val_21}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">22</f:facet>
+                            <h:inputText id="day_22" onkeyup="getTotalHours()" value="#{templateEditBean.val_22}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">23</f:facet>
+                            <h:inputText id="day_23" onkeyup="getTotalHours()" value="#{templateEditBean.val_23}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">24</f:facet>
+                            <h:inputText id="day_24" onkeyup="getTotalHours()" value="#{templateEditBean.val_24}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">25</f:facet>
+                            <h:inputText id="day_25" onkeyup="getTotalHours()" value="#{templateEditBean.val_25}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">26</f:facet>
+                            <h:inputText id="day_26" onkeyup="getTotalHours()" value="#{templateEditBean.val_26}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">27</f:facet>
+                            <h:inputText id="day_27" onkeyup="getTotalHours()" value="#{templateEditBean.val_27}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">28</f:facet>
+                            <h:inputText id="day_28" onkeyup="getTotalHours()" value="#{templateEditBean.val_28}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">29</f:facet>
+                            <h:inputText id="day_29" onkeyup="getTotalHours()" value="#{templateEditBean.val_29}" class="inputWidth" />
+                        </rich:panel>
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">30</f:facet>
+                            <h:inputText id="day_30" onkeyup="getTotalHours()" value="#{templateEditBean.val_30}" class="inputWidth" />
+                        </rich:panel>
+
+                        <rich:panel style="width: 65px">
+                            <f:facet name="header">31</f:facet>
+                            <h:inputText id="day_31" onkeyup="getTotalHours()" value="#{templateEditBean.val_31}" class="inputWidth" />
+                        </rich:panel>
+                        
+                    </h:panelGrid>
+
+                    <h:panelGroup layout="block" style="margin-top: 5px">
+
+                        <h:commandButton type="submit" value="Сохранить" action="#{templateEditBean.onActionSave()}" />
+                        <h:outputText value="&#160;" escape="false" />
+                        <h:outputText value="&#160;" escape="false" />
+                        <h:commandButton type="submit" value="Отмена" action="templatelist" immediate="true" />
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block" style="height: 100px; margin-top: 10px">
+                        <h:message for="templname" style="color:red; font-size: 12px; font-weight: bold; margin:8px;"/>
+                        <br />
+                    </h:panelGroup>
+
+
+                </rich:panel>
+
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
+

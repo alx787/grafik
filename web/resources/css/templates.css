@@ -1,0 +1,26 @@
+
+.col_1 {
+    text-align: left;
+    font-weight: bold;
+    width: 150px;
+}
+
+.col_2 {
+    width: 200px;
+}
+
+.columnTemplEdit {
+    width: 70px;
+}
+
+.rf-sel-cntr {
+    width: 28px;
+}
+
+input.rf-sel-inp {
+    width: 28px;
+}
+
+.inputWidth {
+    width: 40px;
+}
